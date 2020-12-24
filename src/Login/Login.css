@@ -1,0 +1,33 @@
+.login-form {
+  margin-left: 15%;
+  margin-right:15%;
+  width: 70%;
+  }
+  .login-form-forgot {
+    float: right;
+  }
+  .ant-col-rtl .login-form-forgot {
+    float: left;
+  }
+  .login-form-button {
+    width: 100%;
+  }
+  
+  .center {
+
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+   }
+
+   .Link{
+  position: absolute;
+  bottom: 0%;
+  right: 15%;
+  font-size: 14px;
+   }
+
+  
