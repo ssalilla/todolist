@@ -1,38 +1,45 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { List, Row, Col, Divider, Typography } from "antd";
-import _ from "lodash";
 import bg from "../Pics/bg.jpg";
 import Crown from "../Pics/Crown.png";
 import "./Todolist.css";
 import { Button, Progress } from "semantic-ui-react";
-import axios from 'axios';
-import Todo from "./Todo"
+import axios from "../Config/axios";
+import Todo from "./Todo";
+import { BrowserRouter, Route, Link, useHistory } from "react-router-dom";
 
 export default function Todolist() {
   const [todolist, setTodolist] = useState([]);
   const [inputField, setInputField] = useState("");
   const [progress, setProgress] = useState(0);
-  const { Text } = Typography;
+  const { Text, Title } = Typography;
+  const history = useHistory();
 
   const fetchtodolist = async () => {
-        const httpResponse = await axios.get("http://localhost:8000/todolist");
-        setTodolist(httpResponse.data);
+    const httpResponse = await axios.get("/todolist");
+    setTodolist(httpResponse.data);
+    return httpResponse.data;
   };
 
   useEffect(() => {
-      fetchtodolist();
+    fetchtodolist();
   }, []);
 
   const addTodoItem = async () => {
-    await axios.post("http://localhost:8000/todolist", {task: inputField});
-    fetchtodolist();
+    setInputField("")
+    const todoList = await fetchtodolist();
+    if (todoList.length >= 5) {
+      alert("(人◕ω◕) 5 Tasks A Day Is Enough, Rest Some Too.(◕‿◕✿) ");
+    } else {
+      if (inputField === "") {
+        return alert("Please kindly input your task (◕‿◕✿)");
+      }
+      await axios.post("/todolist", { task: inputField });
+      fetchtodolist();
+    }
   };
 
-
-
   function Progress1(props) {
-
-
     return (
       <div
         style={{
@@ -44,38 +51,48 @@ export default function Todolist() {
         <Progress
           percent={props.progress}
           indicating
-          style={{ width: "800px", height: "auto" }}
+          style={{ width: "80%", height: "auto" }}
         />
       </div>
     );
   }
 
+  function isAble(props) {
+    if (progress < 100) {
+      return alert("Please FulFill Your Tasks(ㆁᴗㆁ✿)");
+    }
+    history.push("/goal", {todolist})
+  }
+
   return (
     <div>
-
-<div id="container" style={{ background: `url(${bg})`,}}></div>
+      <div id="container" style={{ background: `url(${bg})` }}></div>
 
       <Row justify="center">
         <List
           style={{ width: "450px", height: "400px" }}
           header={
-            <div style={{ position: "relative", left: "43%" }}>To Do Tasks</div>
+            <div style={{ position: "relative", left: "37%" }}>
+              <Title level={3}>To Do Tasks</Title>
+            </div>
           }
           footer={
-            <div style={{ position: "relative", left: "30%" }}>
-              Five Amazing Things A Day
+            <div style={{ position: "relative", left: "22%" }}>
+              <Title level={4}>Five Amazing Things A Day</Title>
             </div>
           }
           bordered
           dataSource={todolist}
           renderItem={(todo) => (
             <List.Item>
-             <Row style={{ width: "100%" }}>
-            
-                <Todo setProgress={setProgress} progress={progress} todo={todo} fetchData={fetchtodolist}/>
-                
-            </Row>
-
+              <Row style={{ width: "100%" }}>
+                <Todo
+                  setProgress={setProgress}
+                  progress={progress}
+                  todo={todo}
+                  fetchData={fetchtodolist}
+                />
+              </Row>
             </List.Item>
           )}
         />
@@ -101,9 +118,11 @@ export default function Todolist() {
             <Col>
               <Button
                 color="teal"
-                style={{ height: 40, marginTop: -30 }}
+                type="submit"
+                style={{ height: 40, marginTop: -20 }}
                 id="Add"
-                onClick={addTodoItem}>
+                onClick={addTodoItem}
+              >
                 Add
               </Button>
             </Col>
@@ -116,8 +135,10 @@ export default function Todolist() {
       <Progress1 progress={progress} />
 
       <div class="wrapper">
-      <button class="goal"><img src={Crown} alt="Goal" Link to="./Goal/Goal.js"/></button></div>
- 
+        <Button onClick={() => isAble()}>
+            <img class="goal" src={Crown} alt="Goal" />
+        </Button>
+      </div>
     </div>
   );
 }

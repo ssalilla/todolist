@@ -1,21 +1,23 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
 import "./Login.css";
-import { Form, Input, Button, Divider } from "antd";
+import { Form, Input, Divider } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import ttEdit from "../Pics/ttEdit.jpg";
-import {
-  BrowserRouter, Route, Router, Link, useHistory,
-} from "react-router-dom";
+import { Button } from "semantic-ui-react";
 
 class Login extends React.Component {
+  onFinish = () => {
+    this.props.history.push("/todolist");
+  };
+
   render() {
     return (
       <div class="center">
         <img src={ttEdit} alt="tt" width="450" height="auto" />
-        <Divider/>
+        <Divider />
         <Form
+          onFinish={this.onFinish}
           name="normal_login"
           className="login-form"
           initialValues={{
@@ -53,7 +55,11 @@ class Login extends React.Component {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button" Link="/todolist">
+            <Button
+              color="teal"
+              htmlType="submit"
+              className="login-form-button"
+            >
               Log in
             </Button>
           </Form.Item>

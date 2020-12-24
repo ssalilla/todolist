@@ -1,0 +1,16 @@
+  .center {
+
+    position: absolute;
+    top: 45%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+
+   }
+
+   .logout {
+
+
+    position: absolute;
+    top: 107%;
+    left: 30%;
+   }
