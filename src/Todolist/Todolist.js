@@ -26,7 +26,7 @@ export default function Todolist() {
   }, []);
 
   const addTodoItem = async () => {
-    setInputField("")
+    setInputField("");
     const todoList = await fetchtodolist();
     if (todoList.length >= 5) {
       alert("(人◕ω◕) 5 Tasks A Day Is Enough, Rest Some Too.(◕‿◕✿) ");
@@ -61,7 +61,7 @@ export default function Todolist() {
     if (progress < 100) {
       return alert("Please FulFill Your Tasks(ㆁᴗㆁ✿)");
     }
-    history.push("/goal", {todolist})
+    history.push("/goal", { todolist });
   }
 
   return (
@@ -136,7 +136,7 @@ export default function Todolist() {
 
       <div class="wrapper">
         <Button onClick={() => isAble()}>
-            <img class="goal" src={Crown} alt="Goal" />
+          <img class="goal" src={Crown} alt="Goal" />
         </Button>
       </div>
     </div>

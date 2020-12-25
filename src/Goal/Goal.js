@@ -10,7 +10,6 @@ export default function Goal() {
   const location = useLocation();
 
   return (
-
     <div class="center">
       <img src={Success} alt="ss" width="350" height="auto" />
       <List
@@ -23,13 +22,14 @@ export default function Goal() {
           </div>
         }
       />
-         {location.state && location.state.todolist.map((todo) => (
-        <List.Item>
-          <div justifyItems="center">
-            <Col>{todo.task}</Col>
-          </div>
-        </List.Item>
-      ))}
+      {location.state &&
+        location.state.todolist.map((todo) => (
+          <List.Item>
+            <div justifyItems="center">
+              <Col>{todo.task}</Col>
+            </div>
+          </List.Item>
+        ))}
 
       <Button color="teal" htmlType="submit" className="logout">
         <a href="/">Log Out</a>
