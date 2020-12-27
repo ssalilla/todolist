@@ -4,10 +4,15 @@ import "./Goal.css";
 import { List, Row, Col, Typography, Text } from "antd";
 import { Button } from "semantic-ui-react";
 import { useLocation } from "react-router-dom";
+import LocalStorageService from "../services/LocalStorageServices";
 
-export default function Goal() {
+export default function Goal(props) {
   const { Title, Text } = Typography;
   const location = useLocation();
+  const logout = () => {
+    LocalStorageService.removeToken();
+    props.setRole("guest");
+  };
 
   return (
     <div class="center">
@@ -31,8 +36,13 @@ export default function Goal() {
           </List.Item>
         ))}
 
-      <Button color="teal" htmlType="submit" className="logout">
-        <a href="/">Log Out</a>
+      <Button
+        color="teal"
+        htmlType="submit"
+        className="logout"
+        onClick={logout}
+      >
+        Log Out
       </Button>
     </div>
   );

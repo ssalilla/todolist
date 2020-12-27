@@ -6,16 +6,24 @@ import axios from "../Config/axios";
 export default function Todo(props) {
   const [changeInput, setChangeInput] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
 
-  const increment = (todo) => {
-    props.setProgress((preProg) => preProg + 20);
+  const increment = async (todo) => {
+    await axios.put(`/todolist/${todo.id}`, {
+      task: todo.task,
+      isComplete: true,
+    });
+    props.fetchData();
   };
 
-  const updateTodoItem = async (id) => {
-    await axios.put(`/todolist${id}`, { task: changeInput });
+  const updateTodoItem = async (todo) => {
+    await axios.put(
+      `/todolist/${todo.id}`,
+      { task: changeInput },
+      { isComplete: todo.isComplete }
+    );
     props.fetchData();
     setIsEdit(false);
+    toggleEdit();
   };
 
   const toggleEdit = () => {
@@ -43,10 +51,9 @@ export default function Todo(props) {
 
       <Col span={4}>
         <Button
-          disabled={isComplete}
+          disabled={props.todo.isComplete}
           onClick={() => {
             increment(props.todo);
-            setIsComplete(true);
           }}
           color="green"
           size="Mini"
@@ -72,7 +79,7 @@ export default function Todo(props) {
           <Button
             color="brown"
             size="Mini"
-            onClick={() => toggleEdit()}
+            onClick={() => updateTodoItem(props.todo)}
             style={{ height: 40, marginTop: -20 }}
           >
             Done

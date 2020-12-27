@@ -16,8 +16,8 @@ const component = {
     url: "/goal",
     component: GoalPage,
   },
-  registeration: {
-    url: "/registeration",
+  register: {
+    url: "/register",
     component: RegisterPage,
   },
 };
@@ -28,9 +28,10 @@ const configRoles = {
     redirectRoutes: "/",
   },
   user: {
-    allowedRoutes: [component.todo, component.goal, component.login],
+    allowedRoutes: [component.todolist, component.goal, component.login],
     redirectRoutes: "/todo",
   },
 };
 
 export default configRoles;
+export { component };

@@ -6,7 +6,7 @@ import "./Todolist.css";
 import { Button, Progress } from "semantic-ui-react";
 import axios from "../Config/axios";
 import Todo from "./Todo";
-import { BrowserRouter, Route, Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Todolist() {
   const [todolist, setTodolist] = useState([]);
@@ -18,7 +18,11 @@ export default function Todolist() {
   const fetchtodolist = async () => {
     const httpResponse = await axios.get("/todolist");
     setTodolist(httpResponse.data);
-    return httpResponse.data;
+    console.log(httpResponse.data);
+    let progress = httpResponse.data
+      .map((todo) => (todo.isComplete ? 20 : 0))
+      .reduce((total, value) => total + value);
+    setProgress(progress);
   };
 
   useEffect(() => {
@@ -26,9 +30,7 @@ export default function Todolist() {
   }, []);
 
   const addTodoItem = async () => {
-    setInputField("");
-    const todoList = await fetchtodolist();
-    if (todoList.length >= 5) {
+    if (todolist.length >= 5) {
       alert("(人◕ω◕) 5 Tasks A Day Is Enough, Rest Some Too.(◕‿◕✿) ");
     } else {
       if (inputField === "") {
@@ -37,6 +39,7 @@ export default function Todolist() {
       await axios.post("/todolist", { task: inputField });
       fetchtodolist();
     }
+    setInputField("");
   };
 
   function Progress1(props) {

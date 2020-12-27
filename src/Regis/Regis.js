@@ -1,10 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
 import "./index.css";
 import { Form, Input, Button, Divider } from "antd";
+import axios from "../Config/axios";
 import ttEdit from "../Pics/ttEdit.jpg";
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 
 const formItemLayout = {
   labelCol: {
@@ -37,25 +37,35 @@ const tailFormItemLayout = {
   },
 };
 
-const RegistrationForm = () => {
+const RegistrationForm = (props) => {
   const [form] = Form.useForm();
-  const history = useHistory();
+  const History = useHistory();
 
-  function Regis() {
-    alert("Registered!");
-    history.push("/");
-  }
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
+    const body = {
+      username: values.email,
+      password: values.password,
+    };
+    axios
+      .post("/user/Register", body)
+      .then((res) => {
+        alert("Registered!!");
+        props.history.push("/login");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
   return (
     <div class="center">
       {" "}
       <img src={ttEdit} alt="tt" width="450" height="auto" />
-
-      <Divider/>
-
+      <Divider />
       <Form
         {...formItemLayout}
-        onFinish={Regis}
+        onFinish={onFinish}
         form={form}
         name="register"
         scrollToFirstError
@@ -126,4 +136,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default withRouter(RegistrationForm);
