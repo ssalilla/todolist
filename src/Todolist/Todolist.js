@@ -21,7 +21,7 @@ export default function Todolist() {
     console.log(httpResponse.data);
     let progress = httpResponse.data
       .map((todo) => (todo.isComplete ? 20 : 0))
-      .reduce((total, value) => total + value);
+      .reduce((total, value) => total + value, 0);
     setProgress(progress);
   };
 
